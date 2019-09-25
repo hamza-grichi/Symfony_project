@@ -1,0 +1,4 @@
+subscription:
+    resource: "@AppBundle/Resources/config/routes.yml"
+    type: rest
+    prefix: /
