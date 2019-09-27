@@ -10,4 +10,13 @@ namespace AppBundle\Repository;
  */
 class SubscriptionRepository extends \Doctrine\ORM\EntityRepository
 {
+
+    public function findOneByContact($contact)
+    {
+    	
+     return $this->findByContact($contact); 
+     
+    }
+
+
 }

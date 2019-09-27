@@ -10,26 +10,30 @@ use Symfony\Component\HttpFoundation\Response;
 use FOS\RestBundle\View\View;
 use AppBundle\Entity\Subscription;
 use AppBundle\Entity\Contact;
+use AppBundle\Subscription\Manager\SubscriptionManager;
 use AppBundle\Entity\Product;
+
 
 
 
 class SubscriptionController extends FOSRestController
 {
+ 
 	 
-
 	 /**
      * @Rest\Get("/subscription/{idContact}")
      */
     public function getAction($idContact)
     {
-      $restresult = $this->getDoctrine()->getRepository('AppBundle:Subscription')->findByContact($idContact);
       
-        if (empty($restresult)) {
+      $restresult = $this->get('app.subscription');
+	 
+
+        if (empty($restresult->find($idContact))) {
           return new View("there are no Subscriptions exist", Response::HTTP_NOT_FOUND);
         }
 
-      return $restresult;
+      return $restresult->find($idContact);
     }
 
 
