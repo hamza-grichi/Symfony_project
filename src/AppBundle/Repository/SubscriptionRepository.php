@@ -1,4 +1,5 @@
 <?php
+use Doctrine\ORM\EntityRepository;
 
 namespace AppBundle\Repository;
 
@@ -15,6 +16,20 @@ class SubscriptionRepository extends \Doctrine\ORM\EntityRepository
     {
     	
      return $this->findByContact($contact); 
+     
+    }
+
+    public function remove($id)
+    {
+     $em = $this->getEntityManager();	
+     $subscription =  $this->find($id); 
+     if(!empty($subscription))
+     {
+        $em->remove($subscription);
+        $em->flush();
+     }
+     
+     return $subscription;
      
     }
 

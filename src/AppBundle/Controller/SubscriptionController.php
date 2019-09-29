@@ -95,20 +95,16 @@ class SubscriptionController extends FOSRestController
 	 }
  
     /**
-    * @Rest\Delete("/Subscription/{id}")
+    * @Rest\Delete("/subscription/{id}")
     */
 	 public function deleteAction($id)
 	 {
-	
-	   $em = $this->getDoctrine()->getManager();
-	   $subscription = $this->getDoctrine()->getRepository('AppBundle:Subscription')->find($id);
-		if (empty($subscription)) {
-		  return new View("subscription not found", Response::HTTP_NOT_FOUND);
-		 }
-		 else {
-		  $em->remove($subscription);
-		  $em->flush();
-		 }
+	    $restresult = $this->get('app.subscription');
+	 
+
+        if (empty($restresult->delete($id))) {
+          return new View("there are no Subscriptions exist", Response::HTTP_NOT_FOUND);
+        }
 
 		  return new View("deleted successfully", Response::HTTP_OK);
 	 }

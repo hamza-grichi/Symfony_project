@@ -30,6 +30,10 @@ class SubscriptionManager
     {
         return $this->SubscriptionRepository->findOneByContact($code);
     }
+    public function delete($id)
+    {
+        return $this->SubscriptionRepository->remove($id);
+    }
 
 
     
