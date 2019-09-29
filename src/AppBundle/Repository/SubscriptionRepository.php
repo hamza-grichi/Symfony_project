@@ -12,6 +12,13 @@ namespace AppBundle\Repository;
 class SubscriptionRepository extends \Doctrine\ORM\EntityRepository
 {
 
+    public function findSubscription($id)
+    {
+    	
+     return $this->find($id); 
+     
+    }
+    
     public function findOneByContact($contact)
     {
     	
@@ -31,6 +38,18 @@ class SubscriptionRepository extends \Doctrine\ORM\EntityRepository
      
      return $subscription;
      
+    }
+
+    public function save($subscription)
+    {
+
+        $em = $this->getEntityManager();	
+        $em->persist($subscription);
+        $em->flush();
+
+        return $subscription;
+         
+        
     }
 
 

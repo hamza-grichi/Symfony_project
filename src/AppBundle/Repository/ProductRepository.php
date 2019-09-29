@@ -10,4 +10,10 @@ namespace AppBundle\Repository;
  */
 class ProductRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findProduct($id)
+    {
+    	
+     return $this->find($id); 
+     
+    }
 }

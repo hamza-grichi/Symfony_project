@@ -27,12 +27,9 @@ class SubscriptionController extends FOSRestController
     {
       
       $restresult = $this->get('app.subscription');
-	 
-
         if (empty($restresult->find($idContact))) {
           return new View("there are no Subscriptions exist", Response::HTTP_NOT_FOUND);
         }
-
       return $restresult->find($idContact);
     }
 
@@ -42,26 +39,11 @@ class SubscriptionController extends FOSRestController
 	 */
 	 public function postAction(Request $request)
 	 {
-	   $data = new Subscription;
-	   $beginDate = new \DateTime($request->get('beginDate'));
-	   $endDate = new \DateTime($request->get('endDate'));
-	   $product = $this->getDoctrine()->getRepository('AppBundle:Product')->find($request->get('product'));
-	   $contact =  $this->getDoctrine()->getRepository('AppBundle:Contact')->find($request->get('contact'));
-	
-		 if(empty($product) || empty($contact))
-		 {
-		   return new View("subscription product or contact be empty", Response::HTTP_NOT_ACCEPTABLE); 
-		 } 
-
-		  $data->setBeginDate($beginDate);
-		  $data->setEndDate($endDate);
-		  $data->setContact($contact);
-	      $data->setProduct($product);
-		  $em = $this->getDoctrine()->getManager();
-		  $em->persist($data);
-		  $em->flush();
-		   
-		return new View("subscription Added Successfully", Response::HTTP_OK);
+        $restresult = $this->get('app.subscription');
+		  if ($restresult->save($request)) {
+			return new View("subscription Added Successfully", Response::HTTP_NOT_ACCEPTABLE);           
+	      }
+		return new View("subscription product or contact be empty", Response::HTTP_OK);
 	 }
 
 
@@ -70,28 +52,11 @@ class SubscriptionController extends FOSRestController
 	 */
 	 public function updateAction($id,Request $request)
 	 { 
-	   
-	   $beginDate = new \DateTime($request->get('beginDate'));
-	   $endDate = new \DateTime($request->get('endDate'));
-	   $product = $this->getDoctrine()->getRepository('AppBundle:Product')->find($request->get('product'));
-	   $contact =  $this->getDoctrine()->getRepository('AppBundle:Contact')->find($request->get('contact'));
-	   $sn = $this->getDoctrine()->getManager();
-	   $data = $this->getDoctrine()->getRepository('AppBundle:Subscription')->find($id);
-
-		if (empty($data)) {
-		   return new View("subscription not found", Response::HTTP_NOT_FOUND);
-		 } 
-		elseif(!empty($product) && !empty($contact)){
-		  $data->setBeginDate($beginDate);
-	      $data->setEndDate($endDate);
-	      $data->setContact($this->getDoctrine()->getRepository('AppBundle:Contact')->find($contact));
-	      $data->setProduct($this->getDoctrine()->getRepository('AppBundle:Product')->find($product));
-	      $sn->flush();
-		
-		   return new View("subscription Updated Successfully", Response::HTTP_OK);
-		
-		 }
-		 else return new View("subscription product or contact be empty", Response::HTTP_NOT_ACCEPTABLE); 
+		$restresult = $this->get('app.subscription');
+		  if ($restresult->update($request,$id)) {
+			return new View("subscription Updated Successfully", Response::HTTP_NOT_ACCEPTABLE);           
+		  }
+	    return new View("subscription not found or empty contact/product", Response::HTTP_OK);    
 	 }
  
     /**
@@ -100,13 +65,10 @@ class SubscriptionController extends FOSRestController
 	 public function deleteAction($id)
 	 {
 	    $restresult = $this->get('app.subscription');
-	 
-
-        if (empty($restresult->delete($id))) {
-          return new View("there are no Subscriptions exist", Response::HTTP_NOT_FOUND);
-        }
-
-		  return new View("deleted successfully", Response::HTTP_OK);
+		 if (empty($restresult->delete($id))) {
+		   return new View("there are no Subscriptions exist", Response::HTTP_NOT_FOUND);
+		 }
+	    return new View("deleted successfully", Response::HTTP_OK);
 	 }
 	
 }

@@ -9,6 +9,16 @@ services:
         factory: ["@doctrine.orm.entity_manager", getRepository]
         arguments:
             - AppBundle\Entity\Subscription
+    productrepository:
+        class: Doctrine\ORM\EntityRepository
+        factory: ["@doctrine.orm.entity_manager", getRepository]
+        arguments:
+            - AppBundle\Entity\Product
+    contactrepository:
+        class: Doctrine\ORM\EntityRepository
+        factory: ["@doctrine.orm.entity_manager", getRepository]
+        arguments:
+            - AppBundle\Entity\Contact
     app.subscription:
         class:        AppBundle\Subscription\Manager\SubscriptionManager
-        arguments:   ["@doctrine.orm.entity_manager","@subscriptionrepository"]
+        arguments:   ["@doctrine.orm.entity_manager","@subscriptionrepository","@productrepository","@contactrepository"]

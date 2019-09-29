@@ -10,4 +10,10 @@ namespace AppBundle\Repository;
  */
 class ContactRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findContact($id)
+    {
+    	
+     return $this->find($id); 
+     
+    }
 }
